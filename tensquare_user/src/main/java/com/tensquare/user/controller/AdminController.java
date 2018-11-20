@@ -1,4 +1,4 @@
-package com.tensquare.gathering.controller;
+package com.tensquare.user.controller;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tensquare.gathering.pojo.Channel;
-import com.tensquare.gathering.service.ChannelService;
+import com.tensquare.user.pojo.Admin;
+import com.tensquare.user.service.AdminService;
 
 import entity.PageResult;
 import entity.Result;
@@ -24,11 +24,11 @@ import entity.StatusCode;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/channel")
-public class ChannelController {
+@RequestMapping("/admin")
+public class AdminController {
 
 	@Autowired
-	private ChannelService channelService;
+	private AdminService adminService;
 	
 	
 	/**
@@ -37,7 +37,7 @@ public class ChannelController {
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",channelService.findAll());
+		return new Result(true,StatusCode.OK,"查询成功",adminService.findAll());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class ChannelController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",channelService.findById(id));
+		return new Result(true,StatusCode.OK,"查询成功",adminService.findById(id));
 	}
 
 
@@ -60,8 +60,8 @@ public class ChannelController {
 	 */
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
-		Page<Channel> pageList = channelService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Channel>(pageList.getTotalElements(), pageList.getContent()) );
+		Page<Admin> pageList = adminService.findSearch(searchMap, page, size);
+		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Admin>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
@@ -71,27 +71,27 @@ public class ChannelController {
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",channelService.findSearch(searchMap));
+        return new Result(true,StatusCode.OK,"查询成功",adminService.findSearch(searchMap));
     }
 	
 	/**
 	 * 增加
-	 * @param channel
+	 * @param admin
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public Result add(@RequestBody Channel channel  ){
-		channelService.add(channel);
+	public Result add(@RequestBody Admin admin  ){
+		adminService.add(admin);
 		return new Result(true,StatusCode.OK,"增加成功");
 	}
 	
 	/**
 	 * 修改
-	 * @param channel
+	 * @param admin
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
-	public Result update(@RequestBody Channel channel, @PathVariable String id ){
-		channel.setId(id);
-		channelService.update(channel);		
+	public Result update(@RequestBody Admin admin, @PathVariable String id ){
+		admin.setId(id);
+		adminService.update(admin);		
 		return new Result(true,StatusCode.OK,"修改成功");
 	}
 	
@@ -101,7 +101,7 @@ public class ChannelController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
-		channelService.deleteById(id);
+		adminService.deleteById(id);
 		return new Result(true,StatusCode.OK,"删除成功");
 	}
 	

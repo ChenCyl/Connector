@@ -1,4 +1,4 @@
-package com.tensquare.gathering.service;
+package com.tensquare.user.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 
 import util.IdWorker;
 
-import com.tensquare.gathering.dao.ChannelDao;
-import com.tensquare.gathering.pojo.Channel;
+import com.tensquare.user.dao.AdminDao;
+import com.tensquare.user.pojo.Admin;
 
 /**
  * 服务层
@@ -31,10 +31,10 @@ import com.tensquare.gathering.pojo.Channel;
  *
  */
 @Service
-public class ChannelService {
+public class AdminService {
 
 	@Autowired
-	private ChannelDao channelDao;
+	private AdminDao adminDao;
 	
 	@Autowired
 	private IdWorker idWorker;
@@ -43,8 +43,8 @@ public class ChannelService {
 	 * 查询全部列表
 	 * @return
 	 */
-	public List<Channel> findAll() {
-		return channelDao.findAll();
+	public List<Admin> findAll() {
+		return adminDao.findAll();
 	}
 
 	
@@ -55,10 +55,10 @@ public class ChannelService {
 	 * @param size
 	 * @return
 	 */
-	public Page<Channel> findSearch(Map whereMap, int page, int size) {
-		Specification<Channel> specification = createSpecification(whereMap);
+	public Page<Admin> findSearch(Map whereMap, int page, int size) {
+		Specification<Admin> specification = createSpecification(whereMap);
 		PageRequest pageRequest =  PageRequest.of(page-1, size);
-		return channelDao.findAll(specification, pageRequest);
+		return adminDao.findAll(specification, pageRequest);
 	}
 
 	
@@ -67,9 +67,9 @@ public class ChannelService {
 	 * @param whereMap
 	 * @return
 	 */
-	public List<Channel> findSearch(Map whereMap) {
-		Specification<Channel> specification = createSpecification(whereMap);
-		return channelDao.findAll(specification);
+	public List<Admin> findSearch(Map whereMap) {
+		Specification<Admin> specification = createSpecification(whereMap);
+		return adminDao.findAll(specification);
 	}
 
 	/**
@@ -77,25 +77,25 @@ public class ChannelService {
 	 * @param id
 	 * @return
 	 */
-	public Channel findById(String id) {
-		return channelDao.findById(id).get();
+	public Admin findById(String id) {
+		return adminDao.findById(id).get();
 	}
 
 	/**
 	 * 增加
-	 * @param channel
+	 * @param admin
 	 */
-	public void add(Channel channel) {
-		channel.setId( idWorker.nextId()+"" );
-		channelDao.save(channel);
+	public void add(Admin admin) {
+		admin.setId( idWorker.nextId()+"" );
+		adminDao.save(admin);
 	}
 
 	/**
 	 * 修改
-	 * @param channel
+	 * @param admin
 	 */
-	public void update(Channel channel) {
-		channelDao.save(channel);
+	public void update(Admin admin) {
+		adminDao.save(admin);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class ChannelService {
 	 * @param id
 	 */
 	public void deleteById(String id) {
-		channelDao.deleteById(id);
+		adminDao.deleteById(id);
 	}
 
 	/**
@@ -111,20 +111,24 @@ public class ChannelService {
 	 * @param searchMap
 	 * @return
 	 */
-	private Specification<Channel> createSpecification(Map searchMap) {
+	private Specification<Admin> createSpecification(Map searchMap) {
 
-		return new Specification<Channel>() {
+		return new Specification<Admin>() {
 
 			@Override
-			public Predicate toPredicate(Root<Channel> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<Admin> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicateList = new ArrayList<Predicate>();
                 // ID
                 if (searchMap.get("id")!=null && !"".equals(searchMap.get("id"))) {
                 	predicateList.add(cb.like(root.get("id").as(String.class), "%"+(String)searchMap.get("id")+"%"));
                 }
-                // 频道名称
-                if (searchMap.get("name")!=null && !"".equals(searchMap.get("name"))) {
-                	predicateList.add(cb.like(root.get("name").as(String.class), "%"+(String)searchMap.get("name")+"%"));
+                // 登陆名称
+                if (searchMap.get("loginname")!=null && !"".equals(searchMap.get("loginname"))) {
+                	predicateList.add(cb.like(root.get("loginname").as(String.class), "%"+(String)searchMap.get("loginname")+"%"));
+                }
+                // 密码
+                if (searchMap.get("password")!=null && !"".equals(searchMap.get("password"))) {
+                	predicateList.add(cb.like(root.get("password").as(String.class), "%"+(String)searchMap.get("password")+"%"));
                 }
                 // 状态
                 if (searchMap.get("state")!=null && !"".equals(searchMap.get("state"))) {

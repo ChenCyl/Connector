@@ -1,4 +1,4 @@
-package com.tensquare.gathering.pojo;
+package com.tensquare.user.pojo;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,15 +10,16 @@ import java.io.Serializable;
  *
  */
 @Entity
-@Table(name="tb_channel")
-public class Channel implements Serializable{
+@Table(name="tb_admin")
+public class Admin implements Serializable{
 
 	@Id
 	private String id;//ID
 
 
 	
-	private String name;//频道名称
+	private String loginname;//登陆名称
+	private String password;//密码
 	private String state;//状态
 
 	
@@ -29,11 +30,18 @@ public class Channel implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {		
-		return name;
+	public String getLoginname() {		
+		return loginname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setLoginname(String loginname) {
+		this.loginname = loginname;
+	}
+
+	public String getPassword() {		
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getState() {		

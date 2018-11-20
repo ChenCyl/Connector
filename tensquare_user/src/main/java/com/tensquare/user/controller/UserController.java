@@ -1,4 +1,4 @@
-package com.tensquare.gathering.controller;
+package com.tensquare.user.controller;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tensquare.gathering.pojo.Column;
-import com.tensquare.gathering.service.ColumnService;
+import com.tensquare.user.pojo.User;
+import com.tensquare.user.service.UserService;
 
 import entity.PageResult;
 import entity.Result;
@@ -24,11 +24,11 @@ import entity.StatusCode;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/column")
-public class ColumnController {
+@RequestMapping("/user")
+public class UserController {
 
 	@Autowired
-	private ColumnService columnService;
+	private UserService userService;
 	
 	
 	/**
@@ -37,7 +37,7 @@ public class ColumnController {
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",columnService.findAll());
+		return new Result(true,StatusCode.OK,"查询成功",userService.findAll());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class ColumnController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",columnService.findById(id));
+		return new Result(true,StatusCode.OK,"查询成功",userService.findById(id));
 	}
 
 
@@ -60,8 +60,8 @@ public class ColumnController {
 	 */
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
-		Page<Column> pageList = columnService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Column>(pageList.getTotalElements(), pageList.getContent()) );
+		Page<User> pageList = userService.findSearch(searchMap, page, size);
+		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<User>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
@@ -71,27 +71,27 @@ public class ColumnController {
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",columnService.findSearch(searchMap));
+        return new Result(true,StatusCode.OK,"查询成功",userService.findSearch(searchMap));
     }
 	
 	/**
 	 * 增加
-	 * @param column
+	 * @param user
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public Result add(@RequestBody Column column  ){
-		columnService.add(column);
+	public Result add(@RequestBody User user  ){
+		userService.add(user);
 		return new Result(true,StatusCode.OK,"增加成功");
 	}
 	
 	/**
 	 * 修改
-	 * @param column
+	 * @param user
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
-	public Result update(@RequestBody Column column, @PathVariable String id ){
-		column.setId(id);
-		columnService.update(column);		
+	public Result update(@RequestBody User user, @PathVariable String id ){
+		user.setId(id);
+		userService.update(user);		
 		return new Result(true,StatusCode.OK,"修改成功");
 	}
 	
@@ -101,7 +101,7 @@ public class ColumnController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
-		columnService.deleteById(id);
+		userService.deleteById(id);
 		return new Result(true,StatusCode.OK,"删除成功");
 	}
 	
